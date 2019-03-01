@@ -22,5 +22,8 @@
   "homepage": "https://github.com/serverless/enterprise-template#readme",
   "devDependencies": {
     "@serverless/enterprise-plugin": "latest"
+  },
+  "dependencies": {
+    "lorem-ipsum": "^1.0.6"
   }
 }

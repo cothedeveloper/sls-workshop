@@ -24,7 +24,7 @@ provider:
   runtime: nodejs8.10
 
 plugins:
-  - '@serverless/enterprise-plugin'
+#  - '@serverless/enterprise-plugin'
 
 # you can overwrite defaults here
 #  stage: dev

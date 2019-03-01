@@ -1,14 +1,17 @@
 'use strict';
+const loremIpsum = require('lorem-ipsum');
+
 
 module.exports.hello = async (event, context) => {
   let body;
   if (event.body) {
     body = JSON.parse(body);
   }
+  const output = loremIpsum();
   return {
     statusCode: 200,
     body: JSON.stringify({
-      message: 'Go Serverless v1.0! Your function executed successfully!',
+      message: output,
       input: event,
     }),
   };
