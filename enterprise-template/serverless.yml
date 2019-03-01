@@ -22,11 +22,17 @@ frameworkVersion: ">=1.37.1"
 provider:
   name: aws
   runtime: nodejs8.10
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - 'dynamodb:*'
+      Resource:
+        - { "Fn::GetAtt": ["CrudDemo", "Arn"] }
 
 #  - '@serverless/enterprise-plugin'
 
 # you can overwrite defaults here
-#  stage: dev
+  stage: ${env:DEPLOY_ENV,'dev'}
 #  region: us-east-1
 
 # you can add statements to the Lambda function's IAM Role here
@@ -65,6 +71,18 @@ functions:
       - http:
           path: hello
           method: get
+  read:
+    handler: handler.read
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:GetItem
+        Resource:
+          - { "Fn::GetAtt": ["CrudDemo", "Arn"] }
+    events:
+      - http:
+          method: get
+          path: read
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
@@ -107,7 +125,19 @@ functions:
 #       Description: "Description for the output"
 #       Value: "Some output value"
 
-
+resources:
+  Resources:
+    CrudDemo:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
 
 plugins:
   - serverless-offline
